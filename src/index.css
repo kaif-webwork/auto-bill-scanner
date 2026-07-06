@@ -813,13 +813,15 @@ h6 {
 -------------------------------------- */
 @media (max-width: 768px) {
   body:not(.force-desktop) .bill-container {
-    min-width: auto;
+    min-width: 600px; /* Prevent layout breaking */
     width: 100%;
     padding: 10px;
   }
 
   body:not(.force-desktop) .bill-wrapper {
-    overflow-x: hidden;
+    overflow-x: auto; /* Allow horizontal scrolling on small screens */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 15px;
   }
   
   body:not(.force-desktop) .bill-title {
