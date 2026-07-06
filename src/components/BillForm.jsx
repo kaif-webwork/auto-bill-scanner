@@ -260,7 +260,7 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+      <div className="action-buttons">
         <button 
           onClick={handleDownloadPDF} 
           disabled={isDownloading}
