@@ -149,19 +149,26 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
     // Disable mobile layout completely during download
     document.body.classList.add('force-desktop');
     
-    // Temporarily force wrapper to massive desktop width
-    const wrapper = billRef.current.parentElement;
-    const originalWidth = wrapper.style.width;
+    // Temporarily force wrapper and bill to massive desktop width
+    const bill = billRef.current;
+    const originalWidth = bill.style.width;
+    const originalMaxWidth = bill.style.maxWidth;
+    const wrapper = bill.parentElement;
+    const originalWrapperWidth = wrapper.style.width;
+    
     wrapper.style.width = '800px';
+    bill.style.width = '800px';
+    bill.style.maxWidth = '800px';
     
     // Give browser time to repaint the fonts to full desktop size
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, 200));
 
     try {
-      const imgData = await toJpeg(billRef.current, { 
+      const imgData = await toJpeg(bill, { 
         quality: 1.0, 
         backgroundColor: '#ffffff',
-        pixelRatio: 2
+        pixelRatio: 2,
+        width: 800
       });
       return imgData;
     } catch (err) {
@@ -169,7 +176,9 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
       return null;
     } finally {
       // Instantly return to beautiful mobile view
-      wrapper.style.width = originalWidth;
+      bill.style.width = originalWidth;
+      bill.style.maxWidth = originalMaxWidth;
+      wrapper.style.width = originalWrapperWidth;
       document.body.classList.remove('force-desktop');
     }
   };
@@ -202,15 +211,18 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
       const height = billRef.current.offsetHeight;
 
       const pdfWidth = 210; // Standard A4 width in mm
-      const pdfHeight = (height * pdfWidth) / width;
+      const pdfHeight = 297; // Standard A4 height in mm
 
       const pdf = new jsPDF({
-        orientation: pdfHeight > pdfWidth ? 'portrait' : 'landscape',
+        orientation: 'portrait',
         unit: 'mm',
-        format: [pdfWidth, pdfHeight]
+        format: 'a4' // FORCE exact A4 size
       });
       
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, imgHeight);
       pdf.save(`bill_${data.name || 'document'}.pdf`);
     } catch (err) {
       console.error('Error generating PDF', err);
