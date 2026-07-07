@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Palette, Sun, Moon, Download, X } from 'lucide-react';
+import { Toaster } from 'react-hot-toast';
 import BillForm from './components/BillForm';
 import ImageUploader from './components/ImageUploader';
 
@@ -10,6 +11,7 @@ function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [installPrompt, setInstallPrompt] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
 
   // Theme effect
   useEffect(() => {
@@ -32,7 +34,9 @@ function App() {
     const handler = (e) => {
       e.preventDefault();
       setInstallPrompt(e);
-      setShowInstallBanner(true);
+      if (localStorage.getItem('hideInstallBanner') !== 'true') {
+        setShowInstallBanner(true);
+      }
     };
     window.addEventListener('beforeinstallprompt', handler);
     return () => window.removeEventListener('beforeinstallprompt', handler);
@@ -54,6 +58,8 @@ function App() {
 
   const handleImageScanned = (data) => {
     setScannedBillData(data);
+    setIsApplying(true);
+    setTimeout(() => setIsApplying(false), 2500); // Effect lasts 2.5 seconds
   };
 
   if (showIntro) {
@@ -67,6 +73,9 @@ function App() {
 
   return (
     <div className="app-container">
+      <Toaster position="top-right" toastOptions={{ 
+        style: { background: 'var(--panel-bg)', color: 'var(--text-main)', border: '1px solid var(--border-color)' }
+      }} />
       {/* Header */}
       <header className="header">
         <div className="header-top">
@@ -90,12 +99,16 @@ function App() {
       </header>
 
       {/* Install Banner (Mobile) */}
-      <div className={`install-banner ${installPrompt ? 'show' : ''}`}>
+      <div className={`install-banner ${showInstallBanner ? 'show' : ''}`}>
         <div className="install-banner-text">
           <strong>📲 Install App</strong> — Use this app offline like a native app!
         </div>
         <button className="install-banner-btn" onClick={handleInstall}>Install</button>
-        <button className="install-banner-close" onClick={() => setShowInstallBanner(false)}>
+        <button type="button" className="install-banner-close" onClick={(e) => {
+          e.stopPropagation();
+          setShowInstallBanner(false);
+          localStorage.setItem('hideInstallBanner', 'true');
+        }}>
           <X size={16} />
         </button>
       </div>
@@ -120,7 +133,7 @@ function App() {
           <ImageUploader onImageScanned={handleImageScanned} />
         </div>
 
-        <div className="main-form">
+        <div className={`main-form ${isApplying ? 'siri-effect' : ''}`}>
           <BillForm billData={scannedBillData} template={template} />
         </div>
       </div>

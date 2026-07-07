@@ -39,7 +39,7 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
       setData(prevData => {
         const newData = {
           ...prevData,
-          date: billData.date || '',
+          date: billData.date || prevData.date,
           mobNo: billData.mobNo || '',
           name: billData.name || '',
           items: paddedItems.slice(0, 8)
@@ -208,12 +208,7 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
       const imgData = await captureBillImage();
       if (!imgData) return;
       
-      const width = billRef.current.offsetWidth;
-      const height = billRef.current.offsetHeight;
-
       const pdfWidth = 210; // Standard A4 width in mm
-      const pdfHeight = 297; // Standard A4 height in mm
-
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
