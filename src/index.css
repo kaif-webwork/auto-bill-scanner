@@ -1059,8 +1059,8 @@ a:hover {
   border-radius: calc(var(--radius) + 4px);
   z-index: -1;
   opacity: 0.9;
-} 
- 
+}
+
 /* ---------- MOBILE PREVIEW ---------- */
 .mobile-preview-btn {
   display: flex;
