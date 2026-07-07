@@ -1137,6 +1137,18 @@ a:hover {
   border-bottom: 1px solid var(--border-color);
 }
 
+.mobile-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+  background: var(--bg);
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .mobile-close-btn {
   display: flex;
   align-items: center;
@@ -1151,15 +1163,56 @@ a:hover {
   border: 1px solid var(--border-color);
   width: 100%;
   justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 11;
-  background: var(--bg);
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
 }
 
 .mobile-close-btn:active {
   background: var(--bg-secondary);
 }
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.5rem;
+}
+
+.zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: var(--panel-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.zoom-btn:hover {
+  background: var(--primary-glow);
+  border-color: var(--primary);
+}
+
+.zoom-btn:active {
+  transform: scale(0.92);
+}
+
+.zoom-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.zoom-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  min-width: 48px;
+  text-align: center;
+}
+
 
