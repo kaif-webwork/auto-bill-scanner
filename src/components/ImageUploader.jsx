@@ -289,25 +289,25 @@ Return ONLY a JSON object (no markdown, no backticks, no extra text) with this e
       </h2>
 
       {/* AI Model Selector */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
         <button
           onClick={() => setAiModel('openrouter')}
           className={`template-btn ${aiModel === 'openrouter' ? 'active' : ''}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1, justifyContent: 'center' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: '1 1 auto', justifyContent: 'center' }}
         >
           <Zap size={14} /> OpenRouter
         </button>
         <button
           onClick={() => setAiModel('mistral')}
           className={`template-btn ${aiModel === 'mistral' ? 'active' : ''}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1, justifyContent: 'center' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: '1 1 auto', justifyContent: 'center' }}
         >
           <ImageIcon size={14} /> Mistral
         </button>
         <button
           onClick={() => setAiModel('gemini')}
           className={`template-btn ${aiModel === 'gemini' ? 'active' : ''}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1, justifyContent: 'center' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: '1 1 auto', justifyContent: 'center' }}
         >
           <Sparkles size={14} /> Gemini
         </button>
