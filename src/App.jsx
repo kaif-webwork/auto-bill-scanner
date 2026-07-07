@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Palette, Sun, Moon, Download, X } from 'lucide-react';
+import { Palette, Sun, Moon, Download, X, Eye } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import BillForm from './components/BillForm';
 import ImageUploader from './components/ImageUploader';
@@ -12,6 +12,7 @@ function App() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   // Theme effect
   useEffect(() => {
@@ -131,9 +132,23 @@ function App() {
           </div>
 
           <ImageUploader onImageScanned={handleImageScanned} />
+          
+          <button 
+            className="mobile-preview-btn" 
+            onClick={() => setShowMobilePreview(true)}
+          >
+            <Eye size={18} />
+            Preview & Edit Bill
+          </button>
         </div>
 
-        <div className={`main-form ${isApplying ? 'siri-effect' : ''}`}>
+        <div className={`main-form ${isApplying ? 'siri-effect' : ''} ${showMobilePreview ? 'mobile-fullscreen' : ''}`}>
+          {showMobilePreview && (
+            <button className="mobile-close-btn" onClick={() => setShowMobilePreview(false)}>
+              <X size={18} />
+              Back to Scanner
+            </button>
+          )}
           <BillForm billData={scannedBillData} template={template} />
         </div>
       </div>
