@@ -1061,3 +1061,58 @@ a:hover {
   opacity: 0.9;
 } 
  
+/* ---------- MOBILE PREVIEW ---------- */
+.mobile-preview-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mobile-preview-btn:hover {
+  background: var(--primary-hover);
+}
+
+@media (min-width: 768px) {
+  .mobile-preview-btn {
+    display: none;
+  }
+}
+
+.mobile-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
+  background: var(--bg) !important;
+  overflow-y: auto !important;
+  padding: 1rem !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.mobile-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-tertiary);
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  width: max-content;
+}
