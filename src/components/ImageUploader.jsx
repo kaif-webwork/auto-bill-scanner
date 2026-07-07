@@ -141,12 +141,24 @@ export default function ImageUploader({ onImageScanned }) {
 
   return (
     <div className="glass-panel">
-      <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: 'var(--text-main)' }}>
-        <Sparkles size={20} className="dropzone-icon" />
+      <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', color: 'var(--text-main)', fontSize: '1rem', fontWeight: 600 }}>
+        <Sparkles size={18} style={{ color: 'var(--primary)' }} />
         AI Bill Scanner
       </h2>
       
-      {error && <div style={{ color: '#ef4444', marginBottom: '1rem', padding: '0.5rem', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '4px' }}>{error}</div>}
+      {error && (
+        <div style={{ 
+          color: 'var(--danger)', 
+          marginBottom: '0.75rem', 
+          padding: '0.5rem 0.75rem', 
+          background: 'rgba(220,53,69,0.08)', 
+          borderRadius: 'var(--radius-xs)',
+          fontSize: '0.85rem',
+          border: '1px solid rgba(220,53,69,0.15)'
+        }}>
+          {error}
+        </div>
+      )}
 
       <div 
         className={`dropzone ${isDragging ? 'active' : ''}`}
@@ -157,8 +169,8 @@ export default function ImageUploader({ onImageScanned }) {
       >
         <Upload className="dropzone-icon" />
         <div>
-          <p style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem' }}>Click or drag bill image to scan</p>
-          <p style={{ fontSize: '0.85rem' }}>Supports JPG, PNG, WEBP</p>
+          <p style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem', fontSize: '0.9rem' }}>Click or drag bill image to scan</p>
+          <p style={{ fontSize: '0.8rem' }}>Supports JPG, PNG, WEBP</p>
         </div>
         <input 
           id="file-input"

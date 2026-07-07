@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { toJpeg } from 'html-to-image';
 import { jsPDF } from 'jspdf';
+import { FileDown, Image, Share2, RotateCcw } from 'lucide-react';
 import { numberToWords } from '../utils/numberToWords';
 
 export default function BillForm({ billData, onUpdate, template = 'default' }) {
@@ -266,27 +267,27 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
           disabled={isDownloading}
           className="btn-download btn-pdf"
         >
-          {isDownloading ? 'Processing...' : 'Download PDF'}
+          {isDownloading ? '...' : <><FileDown size={14} /> PDF</>}
         </button>
         <button 
           onClick={handleDownloadJPEG} 
           disabled={isDownloading}
           className="btn-download btn-jpeg"
         >
-          {isDownloading ? 'Processing...' : 'Download JPEG'}
+          {isDownloading ? '...' : <><Image size={14} /> JPEG</>}
         </button>
         <button 
           onClick={handleShare} 
           disabled={isDownloading}
           className="btn-download btn-share"
         >
-          {isDownloading ? 'Processing...' : 'Share Bill'}
+          {isDownloading ? '...' : <><Share2 size={14} /> Share</>}
         </button>
         <button 
           onClick={handleReset} 
           className="btn-reset"
         >
-          Reset Bill
+          <RotateCcw size={14} /> Reset
         </button>
       </div>
       

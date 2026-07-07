@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Palette } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Palette, Sun, Moon, Download, X } from 'lucide-react';
 import BillForm from './components/BillForm';
 import ImageUploader from './components/ImageUploader';
 
@@ -7,13 +7,50 @@ function App() {
   const [showIntro, setShowIntro] = useState(true);
   const [scannedBillData, setScannedBillData] = useState(null);
   const [template, setTemplate] = useState('default');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
 
+  // Theme effect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 2500);
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // Intro timer
+  useEffect(() => {
+    const timer = setTimeout(() => setShowIntro(false), 2500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Register service worker & capture install prompt
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstallBanner(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const result = await installPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      setShowInstallBanner(false);
+      setInstallPrompt(null);
+    }
+  };
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   const handleImageScanned = (data) => {
     setScannedBillData(data);
@@ -30,16 +67,45 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Header */}
       <header className="header">
-        <h1>Auto Bill Scanner</h1>
-        <p>Intelligent scanning, auto-fill, and smart calculation.</p>
+        <div className="header-top">
+          <div className="header-brand">
+            <span className="brand-dot" />
+            <h1>Auto Bill Scanner</h1>
+          </div>
+          <div className="header-actions">
+            {installPrompt && (
+              <button className="icon-btn install-btn" onClick={handleInstall} title="Install App">
+                <Download size={16} />
+                Install
+              </button>
+            )}
+            <button className="icon-btn" onClick={toggleTheme} title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}>
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+          </div>
+        </div>
+        <p className="header-subtitle">Intelligent scanning, auto-fill, and smart calculation.</p>
       </header>
 
+      {/* Install Banner (Mobile) */}
+      <div className={`install-banner ${installPrompt ? 'show' : ''}`}>
+        <div className="install-banner-text">
+          <strong>📲 Install App</strong> — Use this app offline like a native app!
+        </div>
+        <button className="install-banner-btn" onClick={handleInstall}>Install</button>
+        <button className="install-banner-close" onClick={() => setShowInstallBanner(false)}>
+          <X size={16} />
+        </button>
+      </div>
+
+      {/* Main Content */}
       <div className="main-content">
         <div className="sidebar">
-          <div className="glass-panel" style={{ marginBottom: '2rem' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 1rem 0', color: 'var(--text-main)' }}>
-              <Palette size={18} /> Choose Template
+          <div className="glass-panel" style={{ marginBottom: '1.25rem' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.75rem 0', color: 'var(--text-main)', fontSize: '0.95rem', fontWeight: 600 }}>
+              <Palette size={16} /> Choose Template
             </h3>
             <div className="template-selector">
               <button className={`template-btn ${template === 'default' ? 'active' : ''}`} onClick={() => setTemplate('default')}>Default</button>
@@ -59,8 +125,9 @@ function App() {
         </div>
       </div>
 
-      <footer style={{ marginTop: '3rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-        Created by <a href="https://kaifcoder.in" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-color)', textDecoration: 'none', fontWeight: 'bold' }}>Kaifcoder.in</a>
+      {/* Footer */}
+      <footer className="app-footer">
+        Created by <a href="https://kaifcoder.in" target="_blank" rel="noopener noreferrer">Kaifcoder.in</a>
       </footer>
     </div>
   );
