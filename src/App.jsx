@@ -166,7 +166,10 @@ function App() {
               </div>
             </>
           )}
-          <div style={showMobilePreview ? { transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center', transition: 'transform 0.2s ease' } : undefined}>
+          <div 
+            className={showMobilePreview ? 'mobile-bill-viewport' : undefined}
+            style={showMobilePreview ? { zoom: `${(zoomLevel / 100) * ((window.innerWidth - 16) / 700)}` } : undefined}
+          >
             <BillForm billData={scannedBillData} template={template} />
           </div>
         </div>

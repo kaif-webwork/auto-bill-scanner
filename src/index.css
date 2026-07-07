@@ -1115,26 +1115,24 @@ a:hover {
 }
 
 .mobile-fullscreen .bill-wrapper {
-  overflow-x: auto !important;
+  overflow: visible !important;
   width: 100% !important;
-  padding: 0.5rem !important;
+  padding: 0 !important;
 }
 
 .mobile-fullscreen .bill-container {
   min-width: 700px !important;
   width: 700px !important;
-  zoom: calc((100vw - 16px) / 700) !important;
-  -moz-transform: scale(calc((100vw - 16px) / 700)) !important;
-  -moz-transform-origin: top left !important;
+  zoom: unset !important;
+}
+
+.mobile-bill-viewport {
+  padding: 0.5rem;
+  transition: zoom 0.2s ease;
 }
 
 .mobile-fullscreen .action-buttons {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--bg);
   padding: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .mobile-toolbar {
