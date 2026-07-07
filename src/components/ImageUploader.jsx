@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Upload, Sparkles, Zap, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -135,6 +136,7 @@ Return ONLY a JSON object (no markdown, no backticks, no extra text) with this e
     return data.choices?.[0]?.message?.content || '';
   };
 
+
   // ---------- GEMINI SCAN ----------
   const scanWithGemini = async (fileBase64, mimeType) => {
     setScanStatus('Scanning with Gemini AI...');
@@ -144,37 +146,27 @@ Return ONLY a JSON object (no markdown, no backticks, no extra text) with this e
       throw new Error('Gemini API key missing. Add VITE_GEMINI_API_KEY to .env file.');
     }
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: SCAN_PROMPT },
-            {
-              inlineData: {
-                mimeType: mimeType,
-                data: fileBase64
-              }
-            }
-          ]
-        }],
-        generationConfig: {
-          temperature: 0.1,
-          responseMimeType: "application/json",
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        generationConfig: { temperature: 0.1, responseMimeType: "application/json" }
+      });
+
+      const result = await model.generateContent([
+        SCAN_PROMPT,
+        {
+          inlineData: {
+            data: fileBase64,
+            mimeType: mimeType
+          }
         }
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(`Gemini API failed: ${errorData.error?.message || response.statusText}`);
+      ]);
+      
+      return result.response.text();
+    } catch (error) {
+      throw new Error(`Gemini API failed: ${error.message}`);
     }
-
-    const json = await response.json();
-    return json.candidates?.[0]?.content?.parts?.[0]?.text || '';
   };
 
   // ---------- PARSE JSON ----------
