@@ -8,7 +8,7 @@ export default function ImageUploader({ onImageScanned }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanStatus, setScanStatus] = useState('');
-  const [aiModel, setAiModel] = useState('mistral'); // 'gemini', 'mistral', 'ollama'
+  const [aiModel, setAiModel] = useState('gemini'); // 'gemini', 'mistral', 'openrouter'
 
   const SCAN_PROMPT = `You are an expert OCR and data extraction system for Indian bills and invoices.
 
