@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Palette, Sun, Moon, Download, X, Eye, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { Palette, Sun, Moon, Download, X, Eye } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import BillForm from './components/BillForm';
 import ImageUploader from './components/ImageUploader';
+import BillPreviewWrapper from './components/BillPreviewWrapper';
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -13,7 +14,7 @@ function App() {
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(100);
+
 
   // Theme effect
   useEffect(() => {
@@ -145,33 +146,16 @@ function App() {
 
         <div className={`main-form ${isApplying ? 'siri-effect' : ''} ${showMobilePreview ? 'mobile-fullscreen' : ''}`}>
           {showMobilePreview && (
-            <>
-              <div className="mobile-toolbar">
-                <button className="mobile-close-btn" onClick={() => { setShowMobilePreview(false); setZoomLevel(100); }}>
-                  <X size={18} />
-                  Back to Scanner
-                </button>
-                <div className="zoom-controls">
-                  <button className="zoom-btn" onClick={() => setZoomLevel(z => Math.max(50, z - 10))} disabled={zoomLevel <= 50}>
-                    <ZoomOut size={18} />
-                  </button>
-                  <span className="zoom-label">{zoomLevel}%</span>
-                  <button className="zoom-btn" onClick={() => setZoomLevel(z => Math.min(200, z + 10))} disabled={zoomLevel >= 200}>
-                    <ZoomIn size={18} />
-                  </button>
-                  <button className="zoom-btn" onClick={() => setZoomLevel(100)} title="Reset Zoom">
-                    <RotateCcw size={16} />
-                  </button>
-                </div>
-              </div>
-            </>
+            <div className="mobile-toolbar">
+              <button className="mobile-close-btn" onClick={() => setShowMobilePreview(false)}>
+                <X size={18} />
+                Back to Scanner
+              </button>
+            </div>
           )}
-          <div 
-            className={showMobilePreview ? 'mobile-bill-viewport' : undefined}
-            style={showMobilePreview ? { zoom: `${(zoomLevel / 100) * ((window.innerWidth - 16) / 700)}` } : undefined}
-          >
+          <BillPreviewWrapper billWidth={700} padding={16}>
             <BillForm billData={scannedBillData} template={template} />
-          </div>
+          </BillPreviewWrapper>
         </div>
       </div>
 

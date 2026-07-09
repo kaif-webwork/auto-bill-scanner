@@ -579,7 +579,7 @@ a:hover {
 /* ---------- BILL TEMPLATE STYLES ---------- */
 .bill-wrapper {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding-bottom: 10px;
 }
 
@@ -913,25 +913,18 @@ a:hover {
 
 /* ---------- MOBILE-FIRST BILL RESPONSIVENESS ---------- */
 @media (max-width: 768px) {
-  .action-buttons button {
-    font-size: 0.72rem;
-    padding: 0.45rem 0.7rem;
-  }
-
-  body:not(.force-desktop) .bill-wrapper {
-    overflow-x: hidden;
-    display: flex;
-    justify-content: center;
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
     width: 100%;
   }
 
-  body:not(.force-desktop) .bill-container {
-    min-width: 700px;
-    width: 700px;
-    margin: 0;
-    zoom: calc((100vw - 32px) / 700);
-    -moz-transform: scale(calc((100vw - 32px) / 700));
-    -moz-transform-origin: top center;
+  .action-buttons button {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
   }
 }
 
@@ -1106,29 +1099,12 @@ a:hover {
   z-index: 10000 !important;
   background: var(--bg) !important;
   overflow-y: auto !important;
-  overflow-x: auto !important;
+  overflow-x: hidden !important;
   padding: 0 !important;
   border-radius: 0 !important;
   border: none !important;
   display: flex !important;
   flex-direction: column !important;
-}
-
-.mobile-fullscreen .bill-wrapper {
-  overflow: visible !important;
-  width: 100% !important;
-  padding: 0 !important;
-}
-
-.mobile-fullscreen .bill-container {
-  min-width: 700px !important;
-  width: 700px !important;
-  zoom: unset !important;
-}
-
-.mobile-bill-viewport {
-  padding: 0.5rem;
-  transition: zoom 0.2s ease;
 }
 
 .mobile-fullscreen .action-buttons {
@@ -1167,50 +1143,50 @@ a:hover {
   background: var(--bg-secondary);
 }
 
-.zoom-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.5rem;
+/* ---------- BILL PREVIEW WRAPPER ---------- */
+.bill-preview-outer {
+  overflow-x: hidden;
 }
 
-.zoom-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-xs);
-  border: 1px solid var(--border-color);
-  background: var(--panel-bg);
-  color: var(--text-main);
-  cursor: pointer;
-  transition: var(--transition);
-}
+/* ---------- PRINT STYLES ---------- */
+@media print {
+  /* Hide everything except the bill */
+  .header, .sidebar, .app-footer, .install-banner,
+  .mobile-toolbar, .mobile-preview-btn,
+  .action-buttons, .bill-preview-outer {
+    all: unset !important;
+  }
 
-.zoom-btn:hover {
-  background: var(--primary-glow);
-  border-color: var(--primary);
-}
+  .app-container, .main-content, .main-form {
+    all: unset !important;
+  }
 
-.zoom-btn:active {
-  transform: scale(0.92);
-}
+  .mobile-fullscreen {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
 
-.zoom-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
+  /* Reset all scaling for print — bill prints at native A4 */
+  .bill-preview-inner {
+    transform: none !important;
+    position: static !important;
+    width: auto !important;
+    margin-left: 0 !important;
+  }
 
-.zoom-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text-main);
-  min-width: 48px;
-  text-align: center;
+  .bill-container {
+    min-width: unset !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    animation: none !important;
+  }
+
+  .bill-wrapper {
+    overflow: visible !important;
+  }
 }
 
 
