@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import BillForm from './components/BillForm';
 import ImageUploader from './components/ImageUploader';
 import BillPreviewWrapper from './components/BillPreviewWrapper';
+import OfflinePage from './components/OfflinePage';
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -76,6 +77,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <OfflinePage />
       <Toaster position="top-right" toastOptions={{ 
         style: { background: 'var(--panel-bg)', color: 'var(--text-main)', border: '1px solid var(--border-color)' }
       }} />
