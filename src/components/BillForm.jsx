@@ -262,27 +262,27 @@ export default function BillForm({ billData, onUpdate, template = 'default' }) {
           disabled={isDownloading}
           className="btn-download btn-pdf"
         >
-          {isDownloading ? '...' : <><FileDown size={14} /> PDF</>}
+          {isDownloading ? '...' : <><FileDown size={18} /> PDF</>}
         </button>
         <button 
           onClick={handleDownloadJPEG} 
           disabled={isDownloading}
           className="btn-download btn-jpeg"
         >
-          {isDownloading ? '...' : <><Image size={14} /> JPEG</>}
+          {isDownloading ? '...' : <><Image size={18} /> JPEG</>}
         </button>
         <button 
           onClick={handleShare} 
           disabled={isDownloading}
           className="btn-download btn-share"
         >
-          {isDownloading ? '...' : <><Share2 size={14} /> Share</>}
+          {isDownloading ? '...' : <><Share2 size={18} /> Share</>}
         </button>
         <button 
           onClick={handleReset} 
           className="btn-reset"
         >
-          <RotateCcw size={14} /> Reset
+          <RotateCcw size={18} /> Reset
         </button>
       </div>
       
